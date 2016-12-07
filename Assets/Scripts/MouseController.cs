@@ -15,6 +15,11 @@ public class MouseController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            if (LevelManager.GetCurrentLevelNumber() == 0)
+            {
+                LevelManager.LoadFirstLevel();
+                return;
+            }
             //Spawn Gravity Well
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 1;

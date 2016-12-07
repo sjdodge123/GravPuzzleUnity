@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 using System.Collections;
 
 public class GoalController : MonoBehaviour
@@ -18,15 +19,9 @@ public class GoalController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Rigidbody2D otherbody = collision.GetComponent<Rigidbody2D>();
-        if (otherbody == null || otherbody == mybody)
+        if (collision.gameObject.CompareTag("FriendBall"))
         {
-            return;
-        }
-        if (otherbody.gameObject.CompareTag("FriendBall"))
-        {
-            //Victory!
-            Debug.Log("Victory!");
+            LevelManager.GetNextLevel();  
         }
     }
 }
