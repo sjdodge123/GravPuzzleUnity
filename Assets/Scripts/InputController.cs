@@ -4,6 +4,8 @@ using System.Collections;
 public class InputController : MonoBehaviour
 {
     public GameObject spawnObject;
+    public bool jumpToScene;
+    public int levelInd;
     private CircleCollider2D spawnCollider;
     // Use this for initialization
     void Start()
@@ -17,7 +19,14 @@ public class InputController : MonoBehaviour
         {
             if (LevelManager.GetCurrentLevelNumber() == 0)
             {
-                LevelManager.LoadFirstLevel();
+                if (jumpToScene)
+                {
+                    LevelManager.LoadLevelByIndex(levelInd);
+                }
+                else
+                {
+                    LevelManager.LoadFirstLevel();
+                }
                 return;
             }
             //Spawn Gravity Well

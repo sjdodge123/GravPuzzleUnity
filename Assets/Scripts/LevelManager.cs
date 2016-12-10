@@ -23,6 +23,17 @@ public class LevelManager {
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+    public static void LoadLevelByIndex(int sceneIndex)
+    {
+        if (sceneIndex >= 0 && sceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(sceneIndex);
+        }
+        else
+        {
+            Debug.LogError("Scene Index specified is out of scene range in build settings.");
+        }
+    }
 
     public static void LoadFirstLevel()
     {
