@@ -30,10 +30,7 @@ public class RuleManager : MonoBehaviour
             }
             LevelManager.LoadMainMenu();
         }
-        if(friendBall != null)
-        {
-            ballBody = friendBall.GetComponent<Rigidbody2D>();
-        }
+        ballBody = friendBall.GetComponent<Rigidbody2D>();
     }
 
     
