@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
 
 public class LevelManager {
 
@@ -23,9 +24,10 @@ public class LevelManager {
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
     public static void LoadLevelByIndex(int sceneIndex)
     {
-        if (sceneIndex >= 0 && sceneIndex < SceneManager.sceneCountInBuildSettings)
+        if (sceneIndex > mainMenuScene && sceneIndex < SceneManager.sceneCountInBuildSettings)
         {
             SceneManager.LoadScene(sceneIndex);
         }
@@ -51,6 +53,15 @@ public class LevelManager {
     public static void ResetCurrentLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public static void SetFirstLevel(int sceneIndex)
+    {
+        if (sceneIndex <= mainMenuScene || sceneIndex > SceneManager.sceneCountInBuildSettings - numMenuScenes)
+        {
+            Debug.LogError("Scene Index specified is out of scene range in build settings. A menu scene might be specified as well.");
+            return;
+        }
+        startingLevel = sceneIndex;
     }
 
 }
