@@ -8,27 +8,43 @@ public class LevelManager {
     //Index (in the build settings) of the main menu 
     private static int mainMenuScene = 0;
 
+    //Index (in the build settings) of the score screen
+    private static int scoreScreenScene = SceneManager.sceneCountInBuildSettings-1;
+
     //Total number of non-playable scenes used check for last scene
-    private static int numMenuScenes = 1;
+    private static int numMenuScenes = 2;
 
     //Index (in the build settings) of the level you would like to start at
     private static int startingLevel = 1;
 
-    public static void GetNextLevel()
+    //Index of the current level. This must be updated anytime Loadscene is called.
+    private static int currentLevel = 0;
+
+    public static void LoadNextLevel()
     {
-        if (SceneManager.sceneCountInBuildSettings == SceneManager.GetActiveScene().buildIndex + numMenuScenes)
+        if (SceneManager.GetActiveScene().buildIndex == scoreScreenScene && currentLevel+1 == scoreScreenScene)
         {
             //TODO: Load end screen!
+            currentLevel = startingLevel;
+            GameManager.SetMenuLoaded(false);
             LoadMainMenu();
             return;
         }
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        currentLevel++;
+        SceneManager.LoadScene(currentLevel);
+    }
+
+    internal static void LoadScoreScreen()
+    {
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scoreScreenScene);
     }
 
     public static void LoadLevelByIndex(int sceneIndex)
     {
         if (sceneIndex > mainMenuScene && sceneIndex < SceneManager.sceneCountInBuildSettings)
         {
+            currentLevel = sceneIndex;
             SceneManager.LoadScene(sceneIndex);
         }
         else
@@ -39,12 +55,16 @@ public class LevelManager {
 
     public static void LoadFirstLevel()
     {
+        currentLevel = startingLevel;
         SceneManager.LoadScene(startingLevel);
     }
+
     public static void LoadMainMenu()
     {
         SceneManager.LoadScene(mainMenuScene);
+        GameManager.SetMenuLoaded(true);
     }
+
     public static int GetCurrentLevelNumber()
     {
         return SceneManager.GetActiveScene().buildIndex;
@@ -54,6 +74,7 @@ public class LevelManager {
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
     public static void SetFirstLevel(int sceneIndex)
     {
         if (sceneIndex <= mainMenuScene || sceneIndex > SceneManager.sceneCountInBuildSettings - numMenuScenes)
@@ -62,6 +83,20 @@ public class LevelManager {
             return;
         }
         startingLevel = sceneIndex;
+    }
+
+    public static void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(currentLevel);
+    }
+
+    public static int GetMenuSceneNum()
+    {
+        return mainMenuScene;
+    }
+    public static int GetScoreScreenNum()
+    {
+        return scoreScreenScene;
     }
 
 }

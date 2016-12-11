@@ -5,7 +5,7 @@ public class RuleManager : MonoBehaviour
 {
     public GameObject friendBall;
     internal Rigidbody2D ballBody;
-    private static bool menuLoaded = false;
+    
     // Use this for initialization
     void Start()
     {
@@ -20,13 +20,22 @@ public class RuleManager : MonoBehaviour
 
     public void InitializeLevel()
     {
-        if (!menuLoaded)
+        if (!GameManager.GetMenuLoaded())
         {
-            menuLoaded = true;
-            LevelManager.SetFirstLevel(LevelManager.GetCurrentLevelNumber());
+            GameManager.SetMenuLoaded(true);
+            var currentLevel = LevelManager.GetCurrentLevelNumber();
+            if (currentLevel != LevelManager.GetMenuSceneNum() && currentLevel != LevelManager.GetScoreScreenNum())
+            {
+                LevelManager.SetFirstLevel(LevelManager.GetCurrentLevelNumber());
+            }
             LevelManager.LoadMainMenu();
         }
-        ballBody = friendBall.GetComponent<Rigidbody2D>();
+        if(friendBall != null)
+        {
+            ballBody = friendBall.GetComponent<Rigidbody2D>();
+        }
     }
+
+    
 }
         

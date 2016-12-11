@@ -27,7 +27,7 @@ public class InputController : MonoBehaviour
 
     private void LeftMousePressed()
     {
-        if (LevelManager.GetCurrentLevelNumber() == 0)
+        if (LevelManager.GetCurrentLevelNumber() == LevelManager.GetMenuSceneNum())
         {
             LevelManager.LoadFirstLevel();
             return;
