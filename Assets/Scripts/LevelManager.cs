@@ -34,7 +34,7 @@ public class LevelManager {
         SceneManager.LoadScene(currentLevel);
     }
 
-    internal static void LoadScoreScreen()
+    public static void LoadScoreScreen()
     {
         currentLevel = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scoreScreenScene);

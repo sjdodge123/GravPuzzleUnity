@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Level3 : RuleManager {
 
-    
 	// Use this for initialization
 	void Start () {
         InitializeLevel();

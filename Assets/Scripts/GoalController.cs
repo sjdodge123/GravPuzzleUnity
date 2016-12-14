@@ -21,7 +21,8 @@ public class GoalController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("FriendBall"))
         {
-            LevelManager.LoadScoreScreen(); 
+            ScoreBoard.CalculateScore();
+            LevelManager.LoadScoreScreen();
         }
     }
 }

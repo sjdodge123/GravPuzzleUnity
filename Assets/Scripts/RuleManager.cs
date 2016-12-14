@@ -4,12 +4,14 @@ using System.Collections;
 public class RuleManager : MonoBehaviour
 {
     public GameObject friendBall;
+    public int maxScore;
+    internal int currentScore;
     internal Rigidbody2D ballBody;
     
     // Use this for initialization
     void Start()
     {
-       
+
     }
 
     // Update is called once per frame
@@ -31,6 +33,8 @@ public class RuleManager : MonoBehaviour
             LevelManager.LoadMainMenu();
         }
         ballBody = friendBall.GetComponent<Rigidbody2D>();
+        Debug.Assert(maxScore != 0, "LevelRules does not have a max score set");
+        ScoreBoard.SetMaxScore(maxScore);
     }
 
     

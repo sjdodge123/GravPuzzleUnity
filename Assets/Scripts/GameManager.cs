@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        ScoreBoard.ClearTotalScore();
         if (instance != null)
         {
             Destroy(gameObject);

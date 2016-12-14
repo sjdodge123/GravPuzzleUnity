@@ -4,26 +4,52 @@ using System.Collections;
 public class InputController : MonoBehaviour
 {
     public GameObject spawnObject;
+    public float touchLevelResetSeconds = 3.0f;
     
     private CircleCollider2D spawnCollider;
+    private bool timerActive = false;
+    private float remainingTime;
+
     // Use this for initialization
     void Start()
     {
         spawnCollider = spawnObject.GetComponent<CircleCollider2D>();
+        remainingTime = touchLevelResetSeconds;
     }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
             LeftMousePressed();
         }
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonDown(1))
         {
             RightMousePressed();
         }
-    }
+        if(Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if(touch.phase == TouchPhase.Began)
+            {
+                StartCountDownTimer();
+            }
+            if (touch.phase == TouchPhase.Ended)
+            {
+                CancelCountDownTimer();
+            }
+        }
+        if (timerActive)
+        {
+            remainingTime -= Time.deltaTime;
+            if(remainingTime <= 0.0f)
+            {
+                CancelCountDownTimer();
+                LevelManager.ResetCurrentLevel();
+            }
+        }
 
+    }
 
     private void LeftMousePressed()
     {
@@ -32,15 +58,7 @@ public class InputController : MonoBehaviour
             LevelManager.LoadFirstLevel();
             return;
         }
-
-        //Spawn Gravity Well
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 1;
-        if (CollidesWithSpawnObject(mousePos, spawnCollider.radius))
-        {
-            return;
-        }
-        var gravWell = Instantiate(spawnObject, mousePos, Quaternion.identity) as GameObject;
+        SpawnGravityWell();
     }
 
     private void RightMousePressed()
@@ -48,7 +66,31 @@ public class InputController : MonoBehaviour
         LevelManager.ResetCurrentLevel();
     }
 
+    private void SpawnGravityWell()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 1;
+        if (CollidesWithSpawnObject(mousePos, spawnCollider.radius))
+        {
+            return;
+        }
+        var gravWell = Instantiate(spawnObject, mousePos, Quaternion.identity) as GameObject;
+        ScoreBoard.GravityWellSpawned();
+    }
 
+    private void StartCountDownTimer()
+    {
+        timerActive = true;
+    }
+
+    private void CancelCountDownTimer()
+    {
+        if (timerActive)
+        {
+            timerActive = false;
+            remainingTime = touchLevelResetSeconds;
+        }
+    }
 
     private bool CollidesWithSpawnObject(Vector3 pos,float radius)
     {
